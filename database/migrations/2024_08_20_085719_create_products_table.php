@@ -4,16 +4,26 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateProductsTable extends Migration
 {
+    const UNAVAILABLE_PRODUCT = 'unavailable'; // Define constant here
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->string('name');
+            $table->string('description', 1000);
+            $table->integer('quantity')->unsigned();
+            $table->string('status')->default(self::UNAVAILABLE_PRODUCT); 
+            $table->string('image');
+            $table->unsignedInteger('seller_id'); 
             $table->timestamps();
+
+            $table->foreign('seller_id')->references('id')->on('users');
         });
     }
 
@@ -24,4 +34,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('products');
     }
-};
+}
