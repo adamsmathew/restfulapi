@@ -14,9 +14,11 @@ class User extends Authenticatable
 
     const VERIFIED_USER = '1';
     const UNVERIFIED_USER = '0';
-    const ADMIN_USER = 'admin';
-    const REGULAR_USER = 'user';
+    const ADMIN_USER = 'true';
+    const REGULAR_USER = 'false';
 
+
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -49,7 +51,7 @@ class User extends Authenticatable
      */
     public function isVerified(): bool
     {
-        return $this->verified == self::VERIFIED_USER;
+        return $this->verified == User::VERIFIED_USER;
     }
 
     /**
@@ -59,7 +61,7 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->admin == self::ADMIN_USER;
+        return $this->admin == User::ADMIN_USER;
     }
 
     /**

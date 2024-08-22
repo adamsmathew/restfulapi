@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\seller;
+use App\Models\Category;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +12,7 @@ class Product extends Model
     use HasFactory;
 
     const AVAILABLE_PRODUCT = 'available';
-    const UNAVAILABLE_PRODUCT = 'unavailable'; // Changed to lowercase for consistency
+    const UNAVAILABLE_PRODUCT = 'unavailable';
 
     protected $fillable = [
         'name',
@@ -36,10 +38,8 @@ class Product extends Model
         return $this->hasMany(Transaction::class);
     }
 
-
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
-
 }
