@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Schema::defaultStringLength(191);
+
         // Schema::defaultStringLength(191);
+        // // Optional: Set default charset and collation
+        // Schema::defaultCharset('utf8');
+        // Schema::defaultCollation('utf8_unicode_ci');
     }
 }

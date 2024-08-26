@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Models\Buyer;
-use App\Http\Controllers\Controller; // Correct import
+use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class BuyerController extends Controller // Extend the correct class
+class BuyerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the transactions.
      */
     public function index()
     {
-        $buyers = Buyer::has('transactions')->get();
-        return $this->showAll($buyers);
+        // Assuming you want to get transactions related to buyers
+        $transactions = Transaction::with('buyer')->get();
+
+        return response()->json(['data' => $transactions], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(Buyer $buyer)
-    // {
-    //     return $this->showOne($buyer);
-    // }
+    public function show($id)
+    {
+        // Assuming you want to get transactions related to buyers
+        $transaction = Transaction::with('buyer')->findOrFail($id);
+        
+        return response()->json(['data' => $transaction], 200);
+    }
+
 }

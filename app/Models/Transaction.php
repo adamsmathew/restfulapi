@@ -17,11 +17,12 @@ class Transaction extends Model
 
     public function buyer()
     {
-        return $this->belongsTo(Buyer::class, 'user_id');
+        return $this->belongsTo(User::class, 'buyer_id');
     }
 
+    // Define the relationship with the User model for products
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

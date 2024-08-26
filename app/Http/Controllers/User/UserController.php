@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
@@ -16,16 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all(); 
-
         return response()->json(['data' => $users], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -38,19 +30,17 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
         ];
-    
-        $request->validate($rules);
-    
+
+        $this->validate($request, $rules);
+
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
-    
-        $user = new User();
         $data['verified'] = User::UNVERIFIED_USER;
-        $data['verification_token'] = $user->generateVerificationCode(); // Use the non-static method with the object
+        $data['verification_token'] = User::generateVerificationCode();
         $data['admin'] = User::REGULAR_USER;
-    
+
         $user = User::create($data);
-    
+
         return response()->json(['data' => $user], 201);
     }
 
@@ -64,47 +54,35 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-    
+
         $rules = [
-            'email' => 'email|unique:users,' . $user->id, 
-            'password' => 'min:6|confirmed',
-            'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER, 
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,' . $user->id,
+            'password' => 'nullable|min:6|confirmed',
+            'admin' => 'nullable|in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
         ];
-    
-        $request->validate($rules);
-    
-        $updated = false;
-    
+
+        $this->validate($request, $rules);
+
         if ($request->has('name')) {
             $user->name = $request->name;
-            $updated = true;
         }
-    
+
         if ($request->has('email') && $user->email !== $request->email) {
             $user->verified = User::UNVERIFIED_USER;
-            $user->verification_token = $user->generateVerificationCode(); // Use the non-static method
+            $user->verification_token = User::generateVerificationCode();
             $user->email = $request->email;
-            $updated = true;
         }
-    
+
         if ($request->has('password')) {
             $user->password = bcrypt($request->password);
-            $updated = true;
         }
-    
+
         if ($request->has('admin')) {
             if (!$user->isVerified()) {
                 return response()->json([
@@ -112,20 +90,18 @@ class UserController extends Controller
                     'code' => 409
                 ], 409);
             }
-            
             $user->admin = $request->admin;
-            $updated = true;
         }
-    
-        if (!$updated) {
+
+        if (!$user->isDirty()) {
             return response()->json([
                 'error' => 'You need to specify a different value to update',
                 'code' => 422
             ], 422);
         }
-    
+
         $user->save();
-    
+
         return response()->json(['data' => $user], 200);
     }
 
@@ -135,9 +111,8 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
-       
         $user->delete();
 
-        return response()->json(['data' => $user],200);
+        return response()->json(['data' => $user], 200);
     }
 }

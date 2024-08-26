@@ -1,5 +1,5 @@
 <?php
-
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,9 +18,9 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description', 1000);
             $table->integer('quantity')->unsigned();
-            $table->string('status')->default(self::UNAVAILABLE_PRODUCT); 
+            $table->string('status')->default(Product::UNAVAILABLE_PRODUCT); 
             $table->string('image');
-            $table->unsignedInteger('seller_id'); 
+            $table->integer('seller_id')->unsigned(); 
             $table->timestamps();
 
             $table->foreign('seller_id')->references('id')->on('users');

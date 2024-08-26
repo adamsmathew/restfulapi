@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Relations\HasMany; // Add if you use relationships
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -17,8 +17,8 @@ class User extends Authenticatable
     const ADMIN_USER = 'true';
     const REGULAR_USER = 'false';
 
-
     protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,13 +45,23 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
      * Determine if the user is verified.
      *
      * @return bool
      */
     public function isVerified(): bool
     {
-        return $this->verified == User::VERIFIED_USER;
+        return $this->verified == self::VERIFIED_USER;
     }
 
     /**
@@ -61,7 +71,7 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->admin == User::ADMIN_USER;
+        return $this->admin == self::ADMIN_USER;
     }
 
     /**
@@ -69,22 +79,9 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function generateVerificationCode(): string
+    public static function generateVerificationCode(): string
     {
         return Str::random(40);
-    }
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 
     /**
