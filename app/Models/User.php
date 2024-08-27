@@ -7,10 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     const VERIFIED_USER = '1';
     const UNVERIFIED_USER = '0';
@@ -18,6 +19,7 @@ class User extends Authenticatable
     const REGULAR_USER = 'false';
 
     protected $table = 'users';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -48,7 +50,24 @@ class User extends Authenticatable
      * The attributes that should be cast.
      *
      * @var array<string, string>
+     * 
+     * 
      */
+    // public function setNameAttribute($name)
+    // {
+    //     $this->attribute['name'] = strtolower($name);
+    // }
+
+    // public function getNameAttribute($name)
+    // {
+    //     return ucwords ($name);
+    // }
+
+    // public function setEmailAttribute($name)
+    // {
+    //     return ucwords ($name);
+    // }
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',

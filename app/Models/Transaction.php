@@ -4,11 +4,15 @@ use App\Models\Buyer;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
     use HasFactory;
 
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'quantity',
         'buyer_id',  
@@ -17,7 +21,7 @@ class Transaction extends Model
 
     public function buyer()
     {
-        return $this->belongsTo(User::class, 'buyer_id');
+        return $this->belongsTo(Buyer::class, 'buyer_id');
     }
 
     // Define the relationship with the User model for products
