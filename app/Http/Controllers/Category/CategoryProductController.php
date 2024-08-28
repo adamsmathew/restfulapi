@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Transaction;
+namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
-class TransactionController extends ApiController
+class CategoryProductController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Category $category)
     {
-        //
+      $products = $category->products;
+
+      return $this->showAll($products);
     }
 
     /**
@@ -34,14 +37,11 @@ class TransactionController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(Buyer $buyer)
+    public function show(string $id)
     {
-        $transactions = $buyer->transactions()
-            ->with('product') // Include related products
-            ->get();
-        
-        return $this->showAll($transactions);
+        //
     }
+
     /**
      * Show the form for editing the specified resource.
      */
