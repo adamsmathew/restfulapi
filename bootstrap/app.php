@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\ValidationException;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // $exceptions->useHandler(Handler::class);
-
-
+        $exceptions->render(function (ValidationException $e, $request) {
+            $errors = $e->validator->errors()->getMessages();
+            return response()->json(['errors' => $errors], 422);
+        });
     })->create();

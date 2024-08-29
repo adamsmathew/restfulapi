@@ -1,18 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Transaction;
+namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\ApiController;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class TransactionController extends ApiController
+class ProductBuyerController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Product $product)
     {
-        //
+        // dd('hi');
+        $buyers = $product->transactions()
+          ->with('buyer')
+          ->get()
+          ->pluck('buyer')
+          ->unique('id')
+          ->values();
+
+          return $this->showAll($buyers);
     }
 
     /**
@@ -34,7 +43,7 @@ class TransactionController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
         //
     }
@@ -42,7 +51,7 @@ class TransactionController extends ApiController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
         //
     }
@@ -50,7 +59,7 @@ class TransactionController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -58,7 +67,7 @@ class TransactionController extends ApiController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
         //
     }

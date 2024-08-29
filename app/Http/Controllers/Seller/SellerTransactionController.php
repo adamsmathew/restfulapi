@@ -1,18 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Transaction;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\ApiController;
+use App\Models\Seller;
 use Illuminate\Http\Request;
 
-class TransactionController extends ApiController
+class SellerTransactionController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Seller $seller)
     {
-        //
+        $transactions = $seller->products()
+          ->whereHas('transactions')
+          ->with('transactions')
+          ->get()
+          ->pluck('transactions')
+          ->collapse();
+
+          return $this->showAll($transactions);
     }
 
     /**
@@ -34,7 +42,7 @@ class TransactionController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Seller $seller)
     {
         //
     }
@@ -42,7 +50,7 @@ class TransactionController extends ApiController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Seller $seller)
     {
         //
     }
@@ -50,7 +58,7 @@ class TransactionController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Seller $seller)
     {
         //
     }
@@ -58,7 +66,7 @@ class TransactionController extends ApiController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Seller $seller)
     {
         //
     }

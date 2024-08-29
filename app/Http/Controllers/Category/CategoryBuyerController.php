@@ -15,10 +15,11 @@ class CategoryBuyerController extends ApiController
     {
         $buyers = $category->products()
         ->whereHas('transactions')
-        ->with('transactions.buyers')
+        ->with('transactions.buyer')
         ->get()
         ->pluck('transactions')
         ->collapse()
+        ->pluck('buyer')
         ->unique('id')
         ->values();
 
