@@ -78,4 +78,7 @@ Route::resource('transactions.sellers', TransactionSellerController::class);
 
 // Define routes for users
 Route::resource('users', UserController::class);
+// Define route for user verification
+Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']);
+Route::name('resend')->get('users/{user}/{resend}', [UserController::class, 'resend']);
 
