@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Transformers\CategoryTransformer;
 
 class Category extends Model
 {
@@ -12,6 +13,7 @@ class Category extends Model
     
     use SoftDeletes;
 
+    public $transformer = CategoryTransformer::class;
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'name',
