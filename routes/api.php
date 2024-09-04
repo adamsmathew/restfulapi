@@ -38,6 +38,9 @@ use App\Http\Controllers\Transaction\TransactionSellerController;
 
 use App\Http\Controllers\User\UserController;
 
+use Laravel\Passport\Http\Controllers\AccessTokenController;
+
+
 // Define routes for buyers
 Route::resource('buyers', BuyerController::class);
 Route::resource('buyers.transactions', BuyerTransactionController::class);
@@ -82,3 +85,4 @@ Route::resource('users', UserController::class);
 Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']);
 Route::name('resend')->get('users/{user}/{resend}', [UserController::class, 'resend']);
 
+Route::post('/oauth/token', [AccessTokenController::class, 'issueToken']);

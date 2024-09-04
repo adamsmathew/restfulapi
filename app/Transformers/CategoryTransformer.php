@@ -37,8 +37,31 @@ class CategoryTransformer extends TransformerAbstract
             'details' =>(string)$category->description,
             'creationDate' =>$category->created_at,
             'lastChange' =>$category->updated_at,
-            'deletedDate' =>isset($category->deleted_at) ? (string) $user->deleted_at : null,
+            'deletedDate' =>isset($category->deleted_at) ? (string) $category->deleted_at : null,
+           
+            'link'=> 
+            [
+                'rel' =>'self',
+                'href' =>route('categories.show',$category->id),
+            ],
 
+            [
+            'rel' =>'category.buyers',
+                'href' =>route('categories.buyers.index',$category->id),
+            ],
+
+            [
+                'rel' =>'category.products',
+                    'href' =>route('categories.products.index',$category->id),
+            ],
+            [
+                'rel' =>'category.sellers',
+                    'href' =>route('categories.products.index',$category->id),
+            ],
+            [
+                'rel' =>'category.transactions',
+                    'href' =>route('categories.transactions.index',$category->id),
+            ],
         ];
     }
     public function orginalAttribute($index)

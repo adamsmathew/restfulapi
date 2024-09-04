@@ -7,6 +7,7 @@ use App\Mail\UserCreated;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
 
                 $product->save(); 
             }
+
+
+        //  Passport::routes();   
         });
     }  
     
