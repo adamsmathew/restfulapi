@@ -9,11 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Traits\ApiResponser;
+use App\Transformers\UserTransformer;
 
 class UserController extends Controller
 {
     use ValidatesRequests, ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware('client.credentials')->only(['store','resend']);
+        $this->middleware('transform.input:' . UserTransformer::class)->only(['index','show']);
+
+    }
     /**
      * Display a listing of the resource.
      */
